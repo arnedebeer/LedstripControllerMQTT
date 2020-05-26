@@ -6,13 +6,13 @@
     <item android:id="@+id/action_edit_ledstrip"
         android:orderInCategory="1"
         android:title="@string/action_edit_ledstrip"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_menu_edit"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_add_ledstrip"
         android:orderInCategory="2"
         android:title="@string/action_add_ledstrip"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_menu_add"
         app:showAsAction="ifRoom" />
 
     <item
