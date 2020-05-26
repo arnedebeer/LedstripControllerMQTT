@@ -2,10 +2,13 @@ package com.arneb.ledstripcontroller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -30,6 +33,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IMqttActionListener {
 
+    private final String LOG_TAG = this.getClass().getName();
+
     public final String LEDSTRIPS_KEY = "ledstrips";
     public final String SELECTED_LEDSTRIP_KEY = "selected";
 
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
     private Ledstrip currentLedstrip;
 
     MqttManager mqttManager;
-//    View progressView;
+    // View progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +57,28 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
         fab.setOnClickListener(this::switchLedstrip);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-//        this.progressView = View.inflate(this.getApplicationContext(), R.layout.progressbar_connecting, null);
-        this.mqttManager = new MqttManager(this, new MqttSettings(sharedPreferences), this);
-
         loadLedstrips();
 
+        this.mqttManager = MqttManager.getInstance(this, new MqttSettings(sharedPreferences), this);
+
+        Switch ledstripSwitch = findViewById(R.id.ledstrip_switch);
+        ledstripSwitch.setOnCheckedChangeListener(this::onLedstripSwitchChange);
+
+//        this.progressView = View.inflate(this.getApplicationContext(), R.layout.progressbar_connecting, null);
+
+        // TODO: 26/05/2020 Request state of current ledstrip
 
         setTitle(currentLedstrip.getName());
+    }
+
+    private void onLedstripSwitchChange(CompoundButton compoundButton, boolean isChecked) {
+        if (isChecked) {
+            compoundButton.setText(R.string.ledstrip_switch_label_on);
+            // TODO: 26/05/2020 Publish message to turn on ledstrip
+        } else {
+            compoundButton.setText(R.string.ledstrip_switch_label_off);
+            // TODO: 26/05/2020 Publish message to turn off ledstrip
+        }
     }
 
     @Override
@@ -107,17 +126,20 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
     private void addNewLedstrip() {
         View dialogView = View.inflate(this, R.layout.dialog_configure_ledstrip, null);
 
-        EditText ledstripName = dialogView.findViewById(R.id.dialog_name);
-        Switch supportsPattern = dialogView.findViewById(R.id.dialog_supports_pattern);
-        EditText mqttTopic = dialogView.findViewById(R.id.dialog_mqtt_topic);
+        EditText nameEditText = dialogView.findViewById(R.id.dialog_name);
+        Switch supportsPatternSwitch = dialogView.findViewById(R.id.dialog_supports_pattern);
+        EditText mqttTopicEditText = dialogView.findViewById(R.id.dialog_mqtt_topic);
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.action_add_ledstrip);
-        dialog.setView(R.layout.dialog_configure_ledstrip);
+        dialog.setView(dialogView);
         dialog.setPositiveButton(R.string.dialog_confirm, (dialog1, which) -> {
-            String newName = ledstripName.getText().toString();
-            boolean supportsPatterns = supportsPattern.isChecked();
-            String newMqttTopic = mqttTopic.getText().toString();
+            String newName = nameEditText.getText().toString();
+            boolean supportsPatterns = supportsPatternSwitch.isChecked();
+            String newMqttTopic = mqttTopicEditText.getText().toString();
+
+            Log.i(LOG_TAG, String.format("New ledstrip added with config: \n\t- %s\n\t- %s\n\t- %s", newName, supportsPatterns, newMqttTopic));
+
             ledstrips.add(new Ledstrip(newName, supportsPatterns, newMqttTopic));
             save();
         });
@@ -128,22 +150,24 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
     private void editCurrentLedstrip() {
         View dialogView = View.inflate(this, R.layout.dialog_configure_ledstrip, null);
 
-        EditText ledstripName = dialogView.findViewById(R.id.dialog_name);
-        Switch supportsPattern = dialogView.findViewById(R.id.dialog_supports_pattern);
-        EditText mqttTopic = dialogView.findViewById(R.id.dialog_mqtt_topic);
+        EditText nameEditText = dialogView.findViewById(R.id.dialog_name);
+        Switch supportsPatternSwitch = dialogView.findViewById(R.id.dialog_supports_pattern);
+        EditText mqttTopicEditText = dialogView.findViewById(R.id.dialog_mqtt_topic);
 
-        ledstripName.setText(currentLedstrip.getName());
-        supportsPattern.setChecked(currentLedstrip.isSupportsPatterns());
-        mqttTopic.setText(currentLedstrip.getMqttTopic());
+        nameEditText.setText(currentLedstrip.getName());
+        supportsPatternSwitch.setChecked(currentLedstrip.isSupportsPatterns());
+        mqttTopicEditText.setText(currentLedstrip.getMqttTopic());
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.action_edit_ledstrip);
         dialog.setView(dialogView);
 
         dialog.setPositiveButton(R.string.dialog_confirm, (dialog1, which) -> {
-            String newName = ledstripName.getText().toString();
-            boolean supportsPatterns = supportsPattern.isChecked();
-            String newMqttTopic = mqttTopic.getText().toString();
+            String newName = nameEditText.getText().toString();
+            boolean supportsPatterns = supportsPatternSwitch.isChecked();
+            String newMqttTopic = mqttTopicEditText.getText().toString();
+
+            Log.i(LOG_TAG, String.format("Edited ledstrip with new config: \n\t- %s\n\t- %s\n\t- %s", newName, supportsPatterns, newMqttTopic));
 
 //            Ledstrip editedLedstrip = ledstrips.get(which);
 //            editedLedstrip.setName(newName);
@@ -153,13 +177,17 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
             currentLedstrip.setSupportsPatterns(supportsPatterns);
             currentLedstrip.setMqttTopic(newMqttTopic);
 
+            System.out.println(ledstrips.indexOf(currentLedstrip));
+
+            setTitle(currentLedstrip.getName());
+
             save();
         });
 
         dialog.create().show();
     }
 
-    private void deleteLedstrip(){
+    private void deleteLedstrip() {
         // TODO: 23/05/2020 implement deleting ledstrips (don't forget to check index of curr selected ledstrip)
     }
 
@@ -173,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
         });
 
         dialog.create().show();
+
+        // TODO: 26/05/2020 Request current ledstrip state
     }
 
     @Override
