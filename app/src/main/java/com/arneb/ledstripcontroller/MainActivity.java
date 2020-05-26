@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
         this.mqttManager = new MqttManager(this, new MqttSettings(sharedPreferences), this);
 
         loadLedstrips();
+
+
+        setTitle(currentLedstrip.getName());
     }
 
     @Override
@@ -102,9 +105,11 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
     }
 
     private void addNewLedstrip() {
-        EditText ledstripName = findViewById(R.id.dialog_name);
-        Switch supportsPattern = findViewById(R.id.dialog_supports_pattern);
-        EditText mqttTopic = findViewById(R.id.dialog_mqtt_topic);
+        View dialogView = View.inflate(this, R.layout.dialog_configure_ledstrip, null);
+
+        EditText ledstripName = dialogView.findViewById(R.id.dialog_name);
+        Switch supportsPattern = dialogView.findViewById(R.id.dialog_supports_pattern);
+        EditText mqttTopic = dialogView.findViewById(R.id.dialog_mqtt_topic);
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.action_add_ledstrip);
@@ -121,9 +126,11 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
     }
 
     private void editCurrentLedstrip() {
-        EditText ledstripName = findViewById(R.id.dialog_name);
-        Switch supportsPattern = findViewById(R.id.dialog_supports_pattern);
-        EditText mqttTopic = findViewById(R.id.dialog_mqtt_topic);
+        View dialogView = View.inflate(this, R.layout.dialog_configure_ledstrip, null);
+
+        EditText ledstripName = dialogView.findViewById(R.id.dialog_name);
+        Switch supportsPattern = dialogView.findViewById(R.id.dialog_supports_pattern);
+        EditText mqttTopic = dialogView.findViewById(R.id.dialog_mqtt_topic);
 
         ledstripName.setText(currentLedstrip.getName());
         supportsPattern.setChecked(currentLedstrip.isSupportsPatterns());
@@ -131,16 +138,20 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.action_edit_ledstrip);
-        dialog.setView(R.layout.dialog_configure_ledstrip);
+        dialog.setView(dialogView);
+
         dialog.setPositiveButton(R.string.dialog_confirm, (dialog1, which) -> {
             String newName = ledstripName.getText().toString();
             boolean supportsPatterns = supportsPattern.isChecked();
             String newMqttTopic = mqttTopic.getText().toString();
 
-            Ledstrip editedLedstrip = ledstrips.get(which);
-            editedLedstrip.setName(newName);
-            editedLedstrip.setSupportsPatterns(supportsPatterns);
-            editedLedstrip.setMqttTopic(newMqttTopic);
+//            Ledstrip editedLedstrip = ledstrips.get(which);
+//            editedLedstrip.setName(newName);
+//            editedLedstrip.setSupportsPatterns(supportsPatterns);
+//            editedLedstrip.setMqttTopic(newMqttTopic);
+            currentLedstrip.setName(newName);
+            currentLedstrip.setSupportsPatterns(supportsPatterns);
+            currentLedstrip.setMqttTopic(newMqttTopic);
 
             save();
         });
@@ -156,7 +167,10 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.dialog_title_switch_ledstrip);
 
-        dialog.setItems(Ledstrip.getLedstripNames(ledstrips), (dialog1, selectedPos) -> currentLedstrip = ledstrips.get(selectedPos));
+        dialog.setItems(Ledstrip.getLedstripNames(ledstrips), (dialog1, selectedPos) -> {
+            currentLedstrip = ledstrips.get(selectedPos);
+            setTitle(currentLedstrip.getName());
+        });
 
         dialog.create().show();
     }
@@ -208,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
                 .show();
         // TODO: 25/05/2020 Make use of the progressbar
         System.out.println("Failed whilst trying to connect to MQTT server");
+        System.out.println(exception.getMessage());
 //        runOnUiThread(() -> {
 //            TextView progressTextView = progressView.findViewById(R.id.progress_textview);
 //            progressTextView.setText(R.string.failed_connection);
