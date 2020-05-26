@@ -18,9 +18,13 @@
         <item>BPM</item>
     </string-array>
 
-    <string-array name="pattern_values" >
-        <item>pattern_rainbow</item>
-        <item>pattern_snake</item>
-        <item>pattern_bpm</item>
+    <string-array name="connection_type_entries" >
+        <item>TCP</item>
+        <item>SSL</item>
+    </string-array>
+
+    <string-array name="connection_type_values">
+        <item>tcp://</item>
+        <item>ssl://</item>
     </string-array>
 </resources>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
@@ -20,49 +21,60 @@
         android:id="@+id/ledstrip_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ledstrip_switch_label" />
+        android:text="@string/ledstrip_switch_label_on" />
 
     <TextView
         android:id="@+id/brightness_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ledstrip_switch"
         android:layout_marginTop="16dp"
-        android:labelFor="@id/brightness_slider"
+        android:labelFor="@id/brightness_seekbar"
         android:text="@string/brightness_label" />
 
     <SeekBar
-        android:id="@+id/brightness_slider"
+        android:id="@+id/brightness_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/brightness_textview"
         android:layout_marginTop="8dp"
         android:max="100"
         android:progress="50" />
 
-    <!-- TODO: Implement color picker-->
+    <!-- TODO: Implement color picker (if multiple selected then fade) -->
     <Button
         android:id="@+id/colour_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/brightness_slider"
+        android:layout_marginTop="16dp"
         android:text="Select colour(s)" />
 
     <TextView
-        android:id="@+id/pattern_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/colour_button"
+        android:layout_marginTop="16dp"
+        android:labelFor="@id/fade_seekbar"
+        android:text="@string/fade_time" />
+
+    <SeekBar
+        android:id="@+id/fade_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:min="1"
+        android:progress="50" />
+
+    <TextView
+        android:id="@+id/pattern_spinner_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:labelFor="@id/pattern_spinner"
-        android:text="Select pattern" />
+        android:text="@string/pattern_spinner_label" />
 
     <Spinner
         android:id="@+id/pattern_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pattern_label"
         android:entries="@array/pattern_entries" />
 
-
-</RelativeLayout>
+</LinearLayout>
