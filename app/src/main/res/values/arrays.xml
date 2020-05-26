@@ -11,4 +11,16 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <string-array name="pattern_entries">
+        <item>Rainbow</item>
+        <item>Snake</item>
+        <item>BPM</item>
+    </string-array>
+
+    <string-array name="pattern_values" >
+        <item>pattern_rainbow</item>
+        <item>pattern_snake</item>
+        <item>pattern_bpm</item>
+    </string-array>
 </resources>

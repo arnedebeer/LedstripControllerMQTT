@@ -1,17 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <include
-        layout="@layout/progressbar_connecting"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:visibility="gone" />
+    android:layout_margin="16dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_main">
 
     <!-- TODO: Use this progressbar to show status of connection to MQTT server -->
+    <!--    <include-->
+    <!--        layout="@layout/progressbar_connecting"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:visibility="gone" />-->
+
+    <Switch
+        android:id="@+id/ledstrip_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ledstrip_switch_label" />
+
+    <TextView
+        android:id="@+id/brightness_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ledstrip_switch"
+        android:layout_marginTop="16dp"
+        android:labelFor="@id/brightness_slider"
+        android:text="@string/brightness_label" />
+
+    <SeekBar
+        android:id="@+id/brightness_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/brightness_textview"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:progress="50" />
+
+    <!-- TODO: Implement color picker-->
+    <Button
+        android:id="@+id/colour_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/brightness_slider"
+        android:text="Select colour(s)" />
+
+    <TextView
+        android:id="@+id/pattern_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/colour_button"
+        android:layout_marginTop="16dp"
+        android:labelFor="@id/pattern_spinner"
+        android:text="Select pattern" />
+
+    <Spinner
+        android:id="@+id/pattern_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pattern_label"
+        android:entries="@array/pattern_entries" />
+
 
 </RelativeLayout>

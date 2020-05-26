@@ -35,4 +35,8 @@
 
     <string name="loading_mqtt" tools:ignore="TypographyEllipsis">Connecting to MQTT server...</string>
     <string name="failed_connection">Unable to connect to MQTT server!</string>
+    <string name="brightness_label">"Brightness: "</string>
+    <string name="ledstrip_switch_label_off">Turn ledstrip on</string>
+    <string name="ledstrip_switch_label_on">Turn ledstrip on</string>
+    <string name="ledstrip_switch_label">Turn ledstrip off or on</string>
 </resources>
