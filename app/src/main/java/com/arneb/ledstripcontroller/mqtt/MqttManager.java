@@ -29,8 +29,13 @@ public class MqttManager {
 
         try {
             MqttConnectOptions connectOptions = new MqttConnectOptions();
-            connectOptions.setUserName(mqttSettings.getUsername());
-            connectOptions.setPassword(mqttSettings.getPassword().toCharArray());
+
+            if (!mqttSettings.getUsername().isEmpty())
+                connectOptions.setUserName(mqttSettings.getUsername());
+
+            if (!mqttSettings.getPassword().isEmpty()) {
+                connectOptions.setPassword(mqttSettings.getPassword().toCharArray());
+            }
 
             IMqttToken token = client.connect(connectOptions);
 

@@ -52,7 +52,7 @@ public class MqttSettings {
     }
 
     public String getFullServerAddress(){
-        return String.format("%s:%s", serverAddress, port);
+        return String.format("tcp://%s:%s", serverAddress, port);
     }
 
     public String getUsername() {
