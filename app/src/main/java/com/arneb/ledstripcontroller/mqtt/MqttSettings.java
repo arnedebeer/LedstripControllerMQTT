@@ -5,6 +5,8 @@ import android.util.Log;
 
 public class MqttSettings {
 
+    private final String LOG_TAG = this.getClass().getName();
+
     private final String SERVER_ADDRESS_KEY = "mqtt_server_address";
     private final String PORT_KEY = "mqtt_port";
     private final String USERNAME_KEY = "mqtt_username";
@@ -22,11 +24,10 @@ public class MqttSettings {
     public MqttSettings(SharedPreferences sharedPreferences) {
         updateValues(sharedPreferences);
 
-        Log.d("MqttSettings", String.format("Initialized MqttSettings: %s, %s, %s, %s, %s, %s", serverAddress, port, username, password, baseTopic, qos));
+        Log.d(LOG_TAG, String.format("Initialized MqttSettings: %s, %s, %s, %s, %s, %s", serverAddress, port, username, password, baseTopic, qos));
     }
 
-    // TODO: 22/05/2020 Update values
-    public void updateValues(SharedPreferences sharedPreferences){
+    public void updateValues(SharedPreferences sharedPreferences) {
         this.serverAddress = sharedPreferences.getString(SERVER_ADDRESS_KEY, "192.168.178.199");
         this.port = sharedPreferences.getString(PORT_KEY, "1883");
         this.username = sharedPreferences.getString(USERNAME_KEY, "");
@@ -51,7 +52,7 @@ public class MqttSettings {
         this.port = port;
     }
 
-    public String getFullServerAddress(){
+    public String getFullServerAddress() {
         return String.format("tcp://%s:%s", serverAddress, port);
     }
 
@@ -67,23 +68,11 @@ public class MqttSettings {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getBaseTopic() {
         return baseTopic;
     }
 
-    public void setBaseTopic(String baseTopic) {
-        this.baseTopic = baseTopic;
-    }
-
     public int getQos() {
         return qos;
-    }
-
-    public void setQos(int qos) {
-        this.qos = qos;
     }
 }

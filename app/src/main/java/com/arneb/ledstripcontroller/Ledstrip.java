@@ -1,17 +1,13 @@
 package com.arneb.ledstripcontroller;
 
-import android.util.JsonReader;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.Iterator;
 import java.util.List;
 
 public class Ledstrip {
+
+    private final String LOG_TAG = this.getClass().getName();
 
     public final static String LEDSTRIP_NAME_KEY = "ledstrip_name";
     public final static String LEDSTRIP_SUPPORTS_PATTERNS_KEY = "ledstrip_supports_patterns";
@@ -29,8 +25,6 @@ public class Ledstrip {
     }
 
     public Ledstrip(JSONObject jsonObject) {
-        // TODO: 23/05/2020 implement constructor from jsonObj
-
         try {
             name = jsonObject.getString(LEDSTRIP_NAME_KEY);
             supportsPatterns = jsonObject.getBoolean(LEDSTRIP_SUPPORTS_PATTERNS_KEY);
