@@ -1,0 +1,60 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/settings_mqtt_header">
+
+        <EditTextPreference
+            app:key="mqtt_server_address"
+            app:title="@string/settings_mqtt_server"
+            app:defaultValue="192.168.178.199"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="mqtt_port"
+            app:title="@string/settings_mqtt_port"
+            app:defaultValue="1883"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="mqtt_username"
+            app:title="@string/settings_mqtt_username"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="mqtt_password"
+            app:title="@string/settings_mqtt_password"
+            app:useSimpleSummaryProvider="true"
+            android:inputType="textPassword" />
+
+        <ListPreference
+            app:key="mqtt_qos"
+            app:title="@string/settings_mqtt_qos"
+            app:entries="@array/qos_entries"
+            android:entryValues="@array/qos_values"
+            app:defaultValue="1"
+            app:useSimpleSummaryProvider="true" />
+
+<!--        <DropDownPreference-->
+<!--            app:title="@string/settings_select_ledstrip"-->
+<!--            app:defaultValue="0"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+<!--        <EditTextPreference-->
+<!--            app:key="ledstrip_name"-->
+<!--            app:title="@string/settings_ledstrip_name_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+<!--        <EditTextPreference-->
+<!--            app:key="ledstrip_support_patterns"-->
+<!--            app:title="@string/settings_ledstrip_support_patterns_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_app_header">
+        <SwitchPreferenceCompat
+            app:key="theme"
+            app:title="@string/settings_theme_title" />
+<!--    TODO Configure icons    -->
+    </PreferenceCategory>
+</PreferenceScreen>
