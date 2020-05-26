@@ -5,12 +5,8 @@
 
     <!-- Settings -->
 
-    <string name="settings_ledstrip_header">Ledstrip settings</string>
-    <string name="settings_select_ledstrip">Select ledstrip to configure</string>
     <string name="settings_app_header">App settings</string>
     <string name="settings_theme_title">Use dark theme</string>
-    <string name="settings_ledstrip_name_title">Change the name of currently selected ledstrip</string>
-    <string name="settings_ledstrip_support_patterns_title">Does this ledstrip support patterns?</string>
 
     <string name="settings_mqtt_header">MQTT settings</string>
     <string name="settings_mqtt_server">Server address</string>
@@ -33,10 +29,11 @@
     <string name="action_edit_ledstrip">Edit ledstrip</string>
     <string name="action_add_ledstrip">Configure new ledstrip</string>
 
-    <string name="loading_mqtt" tools:ignore="TypographyEllipsis">Connecting to MQTT server...</string>
-    <string name="failed_connection">Unable to connect to MQTT server!</string>
     <string name="brightness_label">"Brightness: "</string>
     <string name="ledstrip_switch_label_off">Turn ledstrip on</string>
-    <string name="ledstrip_switch_label_on">Turn ledstrip on</string>
-    <string name="ledstrip_switch_label">Turn ledstrip off or on</string>
+    <string name="ledstrip_switch_label_on">Turn ledstrip off</string>
+    <string name="pattern_spinner_label">Select pattern</string>
+    <string name="fade_time">Fade time: </string>
+    <string name="settings_use_base_topic">Use a base topic for all ledstrips</string>
+    <string name="settings_connection_type">Connection type</string>
 </resources>
