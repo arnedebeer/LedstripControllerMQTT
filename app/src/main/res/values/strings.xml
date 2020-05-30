@@ -1,10 +1,22 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Ledstrip Controller</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Settings -->
+    <!-- Dialogs -->
+    <string name="dialog_title_switch_ledstrip">Switch ledstrip</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_label_name">Ledstrip name</string>
+    <string name="dialog_hint_name">Ledstrip 1</string>
+    <string name="dialog_text_supports_pattern">Supports pattern</string>
+    <string name="dialog_label_topic">MQTT topic</string>
+    <string name="dialog_hint_mqtt_topic">ledstrip1</string>
 
+    <!-- Menu -->
+    <string name="action_edit_ledstrip">Edit ledstrip</string>
+    <string name="action_add_ledstrip">Configure new ledstrip</string>
+
+    <!-- Settings -->
     <string name="settings_app_header">App settings</string>
     <string name="settings_theme_title">Use dark theme</string>
 
@@ -14,26 +26,12 @@
     <string name="settings_mqtt_username">Username</string>
     <string name="settings_mqtt_password">Password</string>
     <string name="settings_mqtt_qos">Quality of Service</string>
-
-    <!-- Dialogs -->
-
-    <string name="dialog_title_switch_ledstrip">Switch ledstrip</string>
-    <string name="dialog_confirm">Confirm</string>
-    <string name="dialog_label_name">Ledstrip name</string>
-    <string name="dialog_hint_name">Ledstrip 1</string>
-    <string name="dialog_text_supports_pattern">Supports pattern</string>
-    <string name="dialog_hint_mqtt_topic">ledstripcontroller/ledstrip1</string>
-    <string name="dialog_label_topic">MQTT topic</string>
-
-    <!-- Menu -->
-    <string name="action_edit_ledstrip">Edit ledstrip</string>
-    <string name="action_add_ledstrip">Configure new ledstrip</string>
+    <string name="settings_use_base_topic">Use a base topic for all ledstrips</string>
+    <string name="settings_connection_type">Connection type</string>
 
     <string name="brightness_label">"Brightness: "</string>
     <string name="ledstrip_switch_label_off">Turn ledstrip on</string>
     <string name="ledstrip_switch_label_on">Turn ledstrip off</string>
     <string name="pattern_spinner_label">Select pattern</string>
     <string name="fade_time">Fade time: </string>
-    <string name="settings_use_base_topic">Use a base topic for all ledstrips</string>
-    <string name="settings_connection_type">Connection type</string>
 </resources>

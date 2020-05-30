@@ -47,12 +47,11 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-
         }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals("mqtt_use_base_topic")){
+            if (key.equals("mqtt_use_base_topic")) {
                 boolean isSelected = sharedPreferences.getBoolean(key, false);
                 getPreferenceScreen().findPreference("mqtt_base_topic").setEnabled(isSelected);
             }
