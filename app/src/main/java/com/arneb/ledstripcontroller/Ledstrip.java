@@ -51,7 +51,7 @@ public class Ledstrip {
     }
 
     public String getMqttTopic() {
-        return mqttTopic;
+        return mqttTopic.replaceAll("/", "");
     }
 
     public void setMqttTopic(String mqttTopic) {
