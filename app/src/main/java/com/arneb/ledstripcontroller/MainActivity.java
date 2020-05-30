@@ -2,14 +2,16 @@ package com.arneb.ledstripcontroller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -31,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IMqttActionListener {
+public class MainActivity extends AppCompatActivity implements IMqttActionListener, SeekBar.OnSeekBarChangeListener {
 
     private final String LOG_TAG = this.getClass().getName();
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
 
     private List<Ledstrip> ledstrips;
     private Ledstrip currentLedstrip;
+    private LedstripState currentLedstripState;
 
     MqttManager mqttManager;
     // View progressView;
@@ -59,26 +62,34 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         loadLedstrips();
 
-        this.mqttManager = MqttManager.getInstance(this, new MqttSettings(sharedPreferences), this);
+        this.mqttManager = MqttManager.getInstance();
+        this.mqttManager.setMqttSettings(new MqttSettings(sharedPreferences));
 
         Switch ledstripSwitch = findViewById(R.id.ledstrip_switch);
         ledstripSwitch.setOnCheckedChangeListener(this::onLedstripSwitchChange);
 
+        SeekBar brightnessSeekBar = findViewById(R.id.brightness_seekbar);
+        brightnessSeekBar.setOnSeekBarChangeListener(this);
+
+        Spinner patternSpinner = findViewById(R.id.pattern_spinner);
+        patternSpinner.setOnItemClickListener(this::onPatternSelect);
 //        this.progressView = View.inflate(this.getApplicationContext(), R.layout.progressbar_connecting, null);
 
         // TODO: 26/05/2020 Request state of current ledstrip
-
+        this.currentLedstripState = new LedstripState(true, 2, "", 2, "");
         setTitle(currentLedstrip.getName());
     }
 
+    private void onPatternSelect(AdapterView<?> parent, View view, int position, long id) {
+        this.currentLedstripState.setPattern(getResources().getStringArray(R.array.pattern_values)[position]);
+        this.mqttManager.publish(currentLedstrip.getMqttTopic(), currentLedstripState.toJSON());
+    }
+
     private void onLedstripSwitchChange(CompoundButton compoundButton, boolean isChecked) {
-        if (isChecked) {
-            compoundButton.setText(R.string.ledstrip_switch_label_on);
-            // TODO: 26/05/2020 Publish message to turn on ledstrip
-        } else {
-            compoundButton.setText(R.string.ledstrip_switch_label_off);
-            // TODO: 26/05/2020 Publish message to turn off ledstrip
-        }
+        String switchText = isChecked ? getString(R.string.ledstrip_switch_label_on) : getString(R.string.ledstrip_switch_label_off);
+        compoundButton.setText(switchText);
+        this.currentLedstripState.setOn(isChecked);
+        mqttManager.publish(currentLedstrip.getMqttTopic(), currentLedstripState.toJSON());
     }
 
     @Override
@@ -169,15 +180,9 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
 
             Log.i(LOG_TAG, String.format("Edited ledstrip with new config: \n\t- %s\n\t- %s\n\t- %s", newName, supportsPatterns, newMqttTopic));
 
-//            Ledstrip editedLedstrip = ledstrips.get(which);
-//            editedLedstrip.setName(newName);
-//            editedLedstrip.setSupportsPatterns(supportsPatterns);
-//            editedLedstrip.setMqttTopic(newMqttTopic);
             currentLedstrip.setName(newName);
             currentLedstrip.setSupportsPatterns(supportsPatterns);
             currentLedstrip.setMqttTopic(newMqttTopic);
-
-            System.out.println(ledstrips.indexOf(currentLedstrip));
 
             setTitle(currentLedstrip.getName());
 
@@ -258,5 +263,21 @@ public class MainActivity extends AppCompatActivity implements IMqttActionListen
 //            progressTextView.setText(R.string.failed_connection);
 //            progressTextView.invalidate();
 //        });
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        this.currentLedstripState.setBrightness(progress);
+        this.mqttManager.publish(currentLedstrip.getMqttTopic(), this.currentLedstripState.toJSON());
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }
