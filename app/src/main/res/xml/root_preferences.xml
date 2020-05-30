@@ -43,17 +43,16 @@
             app:title="@string/settings_mqtt_qos"
             app:useSimpleSummaryProvider="true" />
 
-
         <SwitchPreferenceCompat
             app:allowDividerAbove="true"
-            app:defaultValue="false"
+            app:defaultValue="true"
             app:key="mqtt_use_base_topic"
             app:title="@string/settings_use_base_topic" />
 
         <EditTextPreference
             android:title="Base topic"
             app:defaultValue="ledstripcontroller"
-            app:enabled="false"
+            app:enabled="true"
             app:key="mqtt_base_topic"
             app:useSimpleSummaryProvider="true" />
 
